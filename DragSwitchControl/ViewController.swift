@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     dragControl?.title = "Select an option"
     dragControl?.items = ["First", "Second", "Third", "Fourth", "Some", "Other", "Long", "List", "Item", "Long List Item Hey", "Other Item", "Another Item"]
-    dragControl?.direction = .horizontal
-//    dragControl?.margins = 80
+    dragControl?.direction = .vertical
+    dragControl?.margins = 80
     dragControl?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }

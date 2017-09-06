@@ -10,6 +10,13 @@
 
 import UIKit
 
+extension UIView {
+  func debugLayer(color: UIColor = .red) {
+    layer.borderColor = color.cgColor
+    layer.borderWidth = 1
+  }
+}
+
 /// Action handler on drag menu item selection.
 public typealias DragMenuSelectItemAction = (_ item: String, _ index: Int) -> Void
 
@@ -38,17 +45,25 @@ public class DragMenuItemView: UILabel {
 public class DragMenuView: UIView {
   /// Selection items in drag menu.
   public var items = [DragMenuItemView]()
-  /// Triggers the menu scroll with a distance to edges. Defaults 20.
-  public var scrollingThreshold = CGFloat(20)
+  /// Triggers the menu scroll with a distance to edges. Defaults 40.
+  public var scrollingThreshold = CGFloat(60)
   /// Maximum speed of scrolling. If scroll speed is not increased than it's always scrolls on that speed. Defaults 10.
   public var maximumScrollingSpeed = CGFloat(10)
   /// An option for controlling scroll speed over time. Scroll speed increases to `maximumScrollingSpeed` in two seconds.
   public var isScrollSpeedIncreases = true
   /// A reference the direction of drag menu.
   private var direction: DragMenuDirection
-
+  /// Returns true if menu is scrolling any direction.
+  public private(set) var isScrolling = false { didSet { print("Scrolling \(isScrolling)") } }
+  /// A timer object to update scrolling animation of menu.
+  private var scrollTimer: Timer?
   /// Actual menu view, masked into parent to create scrolling effect.
   public private(set) var menuView = UIView()
+
+  /// Helper enum to scroll menu in a direction.
+  private enum ScrollDirection {
+    case left, right, up, down
+  }
 
   /// Initilizes the drag menu with items, direction and item options.
   ///
@@ -67,14 +82,17 @@ public class DragMenuView: UIView {
   public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlBounds: CGRect, direction: DragMenuDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, highlightedTextColor: UIColor, font: UIFont) {
     self.direction = direction
     super.init(frame: CGRect(
-      x: direction == .horizontal ? margins : 0,
-      y: direction == .horizontal ? 0 : margins,
+      x:  0,
+      y: 0,
       width: direction == .horizontal ? min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.width - (margins * 2)) : controlBounds.width,
       height: direction == .horizontal ? controlBounds.height : min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.height - (margins * 2))))
 
     clipsToBounds = true
     addSubview(menuView)
-    
+
+    debugLayer()
+    menuView.debugLayer(color: .blue)
+
     menuView.backgroundColor = backgroundColor
     menuView.frame = CGRect(
       x: 0,
@@ -111,7 +129,74 @@ public class DragMenuView: UIView {
   ///
   /// - Parameter location: Current position of touch on drag menu.
   public func updateMenu(for position: CGPoint) {
-    items.forEach({ $0.isHighlighted = $0.frame.contains(position) })
+    // Check if menu is scrollable
+    if menuView.frame.width > frame.width || menuView.frame.height > frame.height {
+      // Update menu position
+      switch direction {
+      case .horizontal:
+        if position.x > bounds.minX && position.x < bounds.minX + scrollingThreshold { // Scroll left
+          scroll(to: .left)
+        } else if position.x < bounds.maxX && position.x > bounds.maxX - scrollingThreshold { // Scroll right
+          scroll(to: .right)
+        } else {
+          stopScrolling()
+        }
+      case .vertical:
+        if position.y > bounds.minY && position.y < bounds.minY + scrollingThreshold { // Scroll up
+          scroll(to: .up)
+        } else if position.y < bounds.maxY && position.y > bounds.maxY - scrollingThreshold { // Scroll down
+          scroll(to: .down)
+        } else {
+          stopScrolling()
+        }
+      }
+    }
+
+    // Update highlighted item
+    items.forEach({ $0.isHighlighted = $0.frame.contains(convert(position, to: menuView)) })
+  }
+
+  private func scroll(to: ScrollDirection) {
+    if isScrolling {
+      return
+    }
+
+    isScrolling = true
+    scrollTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
+      guard let this = self else { return }
+      switch to {
+      case .left:
+        var newPosition = this.menuView.frame.origin.x + this.maximumScrollingSpeed
+        if newPosition > 0 {
+          newPosition = 0
+        }
+        this.menuView.layer.frame.origin.x = newPosition
+      case .right:
+        var newPosition = this.menuView.frame.origin.x - this.maximumScrollingSpeed
+        if newPosition <= this.frame.size.width - this.menuView.frame.size.width {
+          newPosition = this.frame.size.width - this.menuView.frame.size.width
+        }
+        this.menuView.layer.frame.origin.x = newPosition
+      case .up:
+        var newPosition = this.menuView.frame.origin.y + this.maximumScrollingSpeed
+        if newPosition > 0 {
+          newPosition = 0
+        }
+        this.menuView.frame.origin.y = newPosition
+      case .down:
+        var newPosition = this.menuView.frame.origin.y - this.maximumScrollingSpeed
+        if newPosition <= this.frame.size.height - this.menuView.frame.size.height {
+          newPosition = this.frame.size.height - this.menuView.frame.size.height
+        }
+        this.menuView.frame.origin.y = newPosition
+      }
+    })
+  }
+
+  private func stopScrolling() {
+    scrollTimer?.invalidate()
+    scrollTimer = nil
+    isScrolling = false
   }
 }
 
@@ -241,7 +326,7 @@ public class DragMenuView: UIView {
   public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard isOpen,
       let dragMenu = dragMenu,
-      let touchLocation = touches.first?.location(in: dragMenu.menuView) else { return }
+      let touchLocation = touches.first?.location(in: dragMenu) else { return }
     dragMenu.updateMenu(for: touchLocation)
   }
 
