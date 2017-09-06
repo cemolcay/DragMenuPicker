@@ -9,17 +9,13 @@
 import UIKit
 
 class ViewController: UIViewController {
+  @IBOutlet weak var dragControl: DragSwitchControl?
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    dragControl?.title = "hey hey hey"
+    dragControl?.items = ["First", "Second", "Third"]
+    dragControl?.direction = .vertical
   }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-
-
 }
 

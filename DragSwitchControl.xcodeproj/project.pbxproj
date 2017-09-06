@@ -12,6 +12,7 @@
 		B25674F91F601A2B0080D8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B25674F71F601A2B0080D8ED /* Main.storyboard */; };
 		B25674FB1F601A2B0080D8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B25674FA1F601A2B0080D8ED /* Assets.xcassets */; };
 		B25674FE1F601A2B0080D8ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B25674FC1F601A2B0080D8ED /* LaunchScreen.storyboard */; };
+		B25675061F601A450080D8ED /* DragSwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25675051F601A450080D8ED /* DragSwitchControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		B25674FA1F601A2B0080D8ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B25674FD1F601A2B0080D8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B25674FF1F601A2B0080D8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B25675051F601A450080D8ED /* DragSwitchControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragSwitchControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				B25674F31F601A2B0080D8ED /* AppDelegate.swift */,
 				B25674F51F601A2B0080D8ED /* ViewController.swift */,
+				B25675051F601A450080D8ED /* DragSwitchControl.swift */,
 				B25674F71F601A2B0080D8ED /* Main.storyboard */,
 				B25674FA1F601A2B0080D8ED /* Assets.xcassets */,
 				B25674FC1F601A2B0080D8ED /* LaunchScreen.storyboard */,
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B25674F61F601A2B0080D8ED /* ViewController.swift in Sources */,
+				B25675061F601A450080D8ED /* DragSwitchControl.swift in Sources */,
 				B25674F41F601A2B0080D8ED /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
