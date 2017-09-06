@@ -16,6 +16,9 @@ class ViewController: UIViewController {
     dragControl?.title = "hey hey hey"
     dragControl?.items = ["First", "Second", "Third"]
     dragControl?.direction = .vertical
+    dragControl?.didSelectItem = { item, index in
+      print("\(item) selected at index \(index)")
+    }
   }
 }
 

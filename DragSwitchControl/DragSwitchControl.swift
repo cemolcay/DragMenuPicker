@@ -122,9 +122,9 @@ public class DragMenuView: UIView {
   /// Text color of selected item label.
   @IBInspectable public var itemTextColor = UIColor.black { didSet { setNeedsLayout() }}
   /// Font of title label.
-  @IBInspectable public var titleFont = UIFont.systemFont(ofSize: 15) { didSet { setNeedsLayout() }}
+  @IBInspectable public var titleFont = UIFont.systemFont(ofSize: 13) { didSet { setNeedsLayout() }}
   /// Font of selected item label.
-  @IBInspectable public var itemFont = UIFont.systemFont(ofSize: 13) { didSet { setNeedsLayout() }}
+  @IBInspectable public var itemFont = UIFont.systemFont(ofSize: 15) { didSet { setNeedsLayout() }}
   /// Background color of drag menu.
   @IBInspectable public var dragMenuBackgroundColor = UIColor.gray
   /// Highlighted item background color in drag menu.
@@ -196,8 +196,8 @@ public class DragMenuView: UIView {
       margins: margins,
       backgroundColor: dragMenuBackgroundColor,
       highlightedColor: dragMenuHightlightedItemColor,
-      textColor: titleTextColor,
-      font: titleFont)
+      textColor: itemTextColor,
+      font: itemFont)
   }
 
   // MARK: Handle touches
@@ -221,6 +221,7 @@ public class DragMenuView: UIView {
   public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if let selectedItem = dragMenu?.items.filter({ $0.isHighlighted }).first {
       self.selectedItemIndex = selectedItem.tag
+      self.didSelectItem(items[selectedItemIndex], selectedItemIndex)
     }
 
     dragMenu?.removeFromSuperview()
