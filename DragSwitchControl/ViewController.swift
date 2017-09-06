@@ -13,9 +13,10 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    dragControl?.title = "hey hey hey"
-    dragControl?.items = ["First", "Second", "Third"]
-    dragControl?.direction = .vertical
+    dragControl?.title = "Select an option"
+    dragControl?.items = ["First", "Second", "Third", "Fourth", "Some", "Other", "Long", "List", "Item", "Long List Item Hey", "Other Item", "Another Item"]
+    dragControl?.direction = .horizontal
+//    dragControl?.margins = 80
     dragControl?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }

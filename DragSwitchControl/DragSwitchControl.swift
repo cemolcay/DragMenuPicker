@@ -11,10 +11,10 @@
 import UIKit
 
 /// Action handler on drag menu item selection.
-public typealias DragSwitchControlSelectItemAction = (_ item: String, _ index: Int) -> Void
+public typealias DragMenuSelectItemAction = (_ item: String, _ index: Int) -> Void
 
 /// Direction of drag menu.
-public enum DragSwitchControlDirection {
+public enum DragMenuDirection {
   /// Left to right, horizontal direction.
   case horizontal
   /// Top to bottom, vertical direction.
@@ -24,10 +24,12 @@ public enum DragSwitchControlDirection {
 /// An item view in drag menu.
 public class DragMenuItemView: UILabel {
   public var highlightedBackgroundColor: UIColor = .clear
+  public var defaultTextColor: UIColor = .black
 
   public override var isHighlighted: Bool {
     didSet {
       backgroundColor = isHighlighted ? highlightedBackgroundColor : .clear
+      textColor = isHighlighted ? highlightedTextColor : defaultTextColor
     }
   }
 }
@@ -36,8 +38,17 @@ public class DragMenuItemView: UILabel {
 public class DragMenuView: UIView {
   /// Selection items in drag menu.
   public var items = [DragMenuItemView]()
+  /// Triggers the menu scroll with a distance to edges. Defaults 20.
+  public var scrollingThreshold = CGFloat(20)
+  /// Maximum speed of scrolling. If scroll speed is not increased than it's always scrolls on that speed. Defaults 10.
+  public var maximumScrollingSpeed = CGFloat(10)
+  /// An option for controlling scroll speed over time. Scroll speed increases to `maximumScrollingSpeed` in two seconds.
+  public var isScrollSpeedIncreases = true
+  /// A reference the direction of drag menu.
+  private var direction: DragMenuDirection
+
   /// Actual menu view, masked into parent to create scrolling effect.
-  private var dragMenuView = UIView()
+  public private(set) var menuView = UIView()
 
   /// Initilizes the drag menu with items, direction and item options.
   ///
@@ -45,47 +56,62 @@ public class DragMenuView: UIView {
   ///   - items: Selection items of drag menu.
   ///   - initalSelection: Initially selected item index.
   ///   - estimatedItemSize: Estimated item width if menu is horizontal, estimated item height if menu is vertical.
-  ///   - controlSize: Reference `DragSwitchControl`'s width if menu is horizontal, height if menu is vertical to fit in reference control.
+  ///   - controlBounds: Reference `DragSwitchControl`'s bounds to fit menu properly.
   ///   - direction: Direction of menu. Either horizontal or vertical.
   ///   - margins: Margins from screen edges. Left and right if menu is horizontal, top and bottom if menu is vertical.
   ///   - backgroundColor: Backgronud color of drag menu.
   ///   - highlightedColor: Highlighted item background color in drag menu.
   ///   - textColor: Text color of selection items in drag menu.
+  ///   - highlightedTextColor: Hihglighted text color of selected item in drag menu.
   ///   - font: Font of selection items in drag menu.
-  public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlSize: CGFloat, direction: DragSwitchControlDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, font: UIFont) {
+  public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlBounds: CGRect, direction: DragMenuDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, highlightedTextColor: UIColor, font: UIFont) {
+    self.direction = direction
     super.init(frame: CGRect(
       x: direction == .horizontal ? margins : 0,
       y: direction == .horizontal ? 0 : margins,
-      width: direction == .horizontal ? min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.width - (margins * 2)) : controlSize,
-      height: direction == .horizontal ? controlSize : min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.height - (margins * 2))))
+      width: direction == .horizontal ? min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.width - (margins * 2)) : controlBounds.width,
+      height: direction == .horizontal ? controlBounds.height : min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.height - (margins * 2))))
 
-    addSubview(dragMenuView)
-    dragMenuView.backgroundColor = backgroundColor
-    dragMenuView.frame = CGRect(
+    clipsToBounds = true
+    addSubview(menuView)
+    
+    menuView.backgroundColor = backgroundColor
+    menuView.frame = CGRect(
       x: 0,
       y: 0,
-      width: direction == .horizontal ? CGFloat(items.count) * estimatedItemSize : controlSize,
-      height: direction == .horizontal ? controlSize : CGFloat(items.count) * estimatedItemSize)
+      width: direction == .horizontal ? CGFloat(items.count) * estimatedItemSize : controlBounds.width,
+      height: direction == .horizontal ? controlBounds.height : CGFloat(items.count) * estimatedItemSize)
 
     for (index, item) in items.enumerated() {
       let itemView = DragMenuItemView(frame: CGRect(
         x: direction == .horizontal ? CGFloat(index) * estimatedItemSize : 0,
         y: direction == .horizontal ? 0 : CGFloat(index) * estimatedItemSize,
-        width: direction == .horizontal ? estimatedItemSize : controlSize,
-        height: direction == .horizontal ? controlSize : estimatedItemSize))
+        width: direction == .horizontal ? estimatedItemSize : controlBounds.width,
+        height: direction == .horizontal ? controlBounds.height : estimatedItemSize))
       itemView.highlightedBackgroundColor = highlightedColor
       itemView.tag = index
       itemView.text = item
       itemView.textAlignment = .center
       itemView.textColor = textColor
+      itemView.highlightedTextColor = highlightedTextColor
       itemView.font = font
       self.items.append(itemView)
-      dragMenuView.addSubview(itemView)
+      menuView.addSubview(itemView)
     }
   }
   
   public required init?(coder aDecoder: NSCoder) {
+    direction = .horizontal
     super.init(coder: aDecoder)
+  }
+
+  // MARK: Update Menu
+
+  /// Updates the selected item and menu scroll for given touch position.
+  ///
+  /// - Parameter location: Current position of touch on drag menu.
+  public func updateMenu(for position: CGPoint) {
+    items.forEach({ $0.isHighlighted = $0.frame.contains(position) })
   }
 }
 
@@ -98,36 +124,38 @@ public class DragMenuView: UIView {
   /// Index of currently selected item in drag menu. Defaults 0.
   @IBInspectable public var selectedItemIndex = 0 { didSet { setNeedsLayout() }}
   /// Action on item selection from draw menu.
-  public var didSelectItem: DragSwitchControlSelectItemAction = { _, _ in return }
+  public var didSelectItem: DragMenuSelectItemAction = { _, _ in return }
   /// Estimated minimum size for each item. Width size for horizontal, height size for vertical drag memu. Defaults 60.
   @IBInspectable public var estimatedItemSize = CGFloat(60)
   /// Direction of drag menu. Either horizontal or vertical.
-  public var direction = DragSwitchControlDirection.horizontal
+  public var direction = DragMenuDirection.horizontal
   /// Margins from edges of screen. Left and right margins for horizontal, top and bottom margins for vertical drag menu. Defaults 0
   @IBInspectable public var margins = CGFloat(0)
 
   /// Read-only property to get info about drag menu is shown or not.
   public dynamic var isOpen: Bool { return dragMenu != nil }
   /// Title label of button.
-  private var titleLabel = UILabel()
+  public private(set) var titleLabel = UILabel()
   /// Selected item label of button.
-  private var itemLabel = UILabel()
+  public private(set) var itemLabel = UILabel()
   /// Stack view of button with stack of labels.
-  private var buttonStack = UIStackView()
+  public private(set) var buttonStack = UIStackView()
   /// Drag menu with selection of items. Nil if not shown.
-  private var dragMenu: DragMenuView?
+  public private(set) var dragMenu: DragMenuView?
 
-  /// Text color of title label.
+  /// Text color of title label. Defaults black.
   @IBInspectable public var titleTextColor = UIColor.black { didSet { setNeedsLayout() }}
-  /// Text color of selected item label.
+  /// Text color of selected item label. Defaults black.
   @IBInspectable public var itemTextColor = UIColor.black { didSet { setNeedsLayout() }}
-  /// Font of title label.
+  /// Highlighted text color of selected item label. Defaults black.
+  @IBInspectable public var highlightedTextColor = UIColor.black { didSet { setNeedsLayout() }}
+  /// Font of title label. Defaults 13.
   @IBInspectable public var titleFont = UIFont.systemFont(ofSize: 13) { didSet { setNeedsLayout() }}
-  /// Font of selected item label.
+  /// Font of selected item label. Defaults 15.
   @IBInspectable public var itemFont = UIFont.systemFont(ofSize: 15) { didSet { setNeedsLayout() }}
-  /// Background color of drag menu.
+  /// Background color of drag menu. Defaults gray.
   @IBInspectable public var dragMenuBackgroundColor = UIColor.gray
-  /// Highlighted item background color in drag menu.
+  /// Highlighted item background color in drag menu. Defaults yellow.
   @IBInspectable public var dragMenuHightlightedItemColor = UIColor.yellow
 
   // MARK: Init
@@ -140,7 +168,7 @@ public class DragMenuView: UIView {
   ///   - items: Items of selection in drag menu.
   ///   - initialSelectionIndex: Initially selected item index.
   ///   - didSelectItem: Action on item selection.
-  public init(frame: CGRect, title: String, items: [String], initialSelectionIndex: Int = 0, didSelectItem: @escaping DragSwitchControlSelectItemAction) {
+  public init(frame: CGRect, title: String, items: [String], initialSelectionIndex: Int = 0, didSelectItem: @escaping DragMenuSelectItemAction) {
     super.init(frame: frame)
     self.title = title
     self.items = items
@@ -191,12 +219,13 @@ public class DragMenuView: UIView {
       items: items,
       initalSelection: selectedItemIndex,
       estimatedItemSize: estimatedItemSize,
-      controlSize: direction == .horizontal ? bounds.height : bounds.width,
+      controlBounds: bounds,
       direction: direction,
       margins: margins,
       backgroundColor: dragMenuBackgroundColor,
       highlightedColor: dragMenuHightlightedItemColor,
       textColor: itemTextColor,
+      highlightedTextColor: highlightedTextColor,
       font: itemFont)
   }
 
@@ -205,17 +234,15 @@ public class DragMenuView: UIView {
   public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard dragMenu == nil else { return }
     dragMenu = createDragMenu()
-    guard let dragMenu = self.dragMenu,
-      let touchLocation = touches.first?.location(in: dragMenu)
-      else { return }
-
+    guard let dragMenu = self.dragMenu else { return }
     addSubview(dragMenu)
-    checkSelection(touchLocation: touchLocation)
   }
 
   public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    guard let touchLocation = touches.first?.location(in: dragMenu) else { return }
-    checkSelection(touchLocation: touchLocation)
+    guard isOpen,
+      let dragMenu = dragMenu,
+      let touchLocation = touches.first?.location(in: dragMenu.menuView) else { return }
+    dragMenu.updateMenu(for: touchLocation)
   }
 
   public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -226,10 +253,5 @@ public class DragMenuView: UIView {
 
     dragMenu?.removeFromSuperview()
     dragMenu = nil
-  }
-
-  private func checkSelection(touchLocation: CGPoint) {
-    guard isOpen, let dragMenu = dragMenu else { return }
-    dragMenu.items.forEach({ $0.isHighlighted = $0.frame.contains(touchLocation) })
   }
 }
