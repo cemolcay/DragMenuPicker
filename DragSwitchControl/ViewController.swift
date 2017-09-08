@@ -9,17 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
+  @IBOutlet weak var scrollView: UIScrollView?
   @IBOutlet weak var dragControl: DragSwitchControl?
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    scrollView?.contentSize.height = 2000
     dragControl?.title = "Select an option"
-    dragControl?.items = ["First", "Second", "Third", "Fourth", "Some", "Other", "Long", "List", "Item", "Long List Item Hey", "Other Item", "Another Item"]
     dragControl?.direction = .vertical
-    dragControl?.margins = 80
+    dragControl?.items = ["First", "Second", "Third", "Fourth", "Other", "Another", "Item 2", "Item 3"]
     dragControl?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }
   }
 }
-

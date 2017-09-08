@@ -20,6 +20,9 @@ extension UIView {
 /// Action handler on drag menu item selection.
 public typealias DragMenuSelectItemAction = (_ item: String, _ index: Int) -> Void
 
+/// Applies view or layer style to menu and its every item in a block.
+public typealias DragMenuApplyStyleAction = (_ menu: DragMenuView, _ item: DragMenuItemView) -> Void
+
 /// Direction of drag menu.
 public enum DragMenuDirection {
   /// Left to right, horizontal direction.
@@ -46,7 +49,7 @@ public class DragMenuView: UIView {
   /// Selection items in drag menu.
   public var items = [DragMenuItemView]()
   /// Triggers the menu scroll with a distance to edges. Defaults 40.
-  public var scrollingThreshold = CGFloat(60)
+  public var scrollingThreshold = CGFloat(40)
   /// Maximum speed of scrolling. If scroll speed is not increased than it's always scrolls on that speed. Defaults 10.
   public var maximumScrollingSpeed = CGFloat(10)
   /// An option for controlling scroll speed over time. Scroll speed increases to `maximumScrollingSpeed` in two seconds.
@@ -71,7 +74,7 @@ public class DragMenuView: UIView {
   ///   - items: Selection items of drag menu.
   ///   - initalSelection: Initially selected item index.
   ///   - estimatedItemSize: Estimated item width if menu is horizontal, estimated item height if menu is vertical.
-  ///   - controlBounds: Reference `DragSwitchControl`'s bounds to fit menu properly.
+  ///   - controlBounds: Reference `DragSwitchControl`'s bounds relative to window to fit menu properly in screen real estate.
   ///   - direction: Direction of menu. Either horizontal or vertical.
   ///   - margins: Margins from screen edges. Left and right if menu is horizontal, top and bottom if menu is vertical.
   ///   - backgroundColor: Backgronud color of drag menu.
@@ -79,24 +82,28 @@ public class DragMenuView: UIView {
   ///   - textColor: Text color of selection items in drag menu.
   ///   - highlightedTextColor: Hihglighted text color of selected item in drag menu.
   ///   - font: Font of selection items in drag menu.
-  public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlBounds: CGRect, direction: DragMenuDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, highlightedTextColor: UIColor, font: UIFont) {
+  ///   - applyStyle: Style drag menu and its every item with this optional function.
+  public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlBounds: CGRect, direction: DragMenuDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, highlightedTextColor: UIColor, font: UIFont, applyStyle: DragMenuApplyStyleAction? = nil) {
     self.direction = direction
     super.init(frame: CGRect(
-      x:  0,
-      y: 0,
-      width: direction == .horizontal ? min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.width - (margins * 2)) : controlBounds.width,
-      height: direction == .horizontal ? controlBounds.height : min(CGFloat(items.count) * estimatedItemSize, UIScreen.main.bounds.height - (margins * 2))))
+      x: direction == .horizontal ? -controlBounds.minX + margins : 0,
+      y: direction == .horizontal ? 0 : -controlBounds.minY + margins,
+      width: direction == .horizontal ? UIScreen.main.bounds.width - (margins * 2) : controlBounds.width,
+      height: direction == .horizontal ? controlBounds.height : UIScreen.main.bounds.height - (margins * 2)))
 
     clipsToBounds = true
     addSubview(menuView)
+    isExclusiveTouch = true
+    addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTap(gesture:))))
 
     debugLayer()
     menuView.debugLayer(color: .blue)
 
+    addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil)) // add dummy gesture recognizer
     menuView.backgroundColor = backgroundColor
     menuView.frame = CGRect(
-      x: 0,
-      y: 0,
+      x: direction == .horizontal ? -(CGFloat(initalSelection) * estimatedItemSize) + controlBounds.minX : 0,
+      y: direction == .horizontal ? 0 : -(CGFloat(initalSelection) * estimatedItemSize) + controlBounds.minY - (controlBounds.size.height / 2),
       width: direction == .horizontal ? CGFloat(items.count) * estimatedItemSize : controlBounds.width,
       height: direction == .horizontal ? controlBounds.height : CGFloat(items.count) * estimatedItemSize)
 
@@ -115,7 +122,14 @@ public class DragMenuView: UIView {
       itemView.font = font
       self.items.append(itemView)
       menuView.addSubview(itemView)
+
+      applyStyle?(self, itemView)
     }
+  }
+
+  public func didTap(gesture: UITapGestureRecognizer) {
+    print("did tap")
+    return
   }
   
   public required init?(coder aDecoder: NSCoder) {
@@ -162,7 +176,7 @@ public class DragMenuView: UIView {
     }
 
     isScrolling = true
-    scrollTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
+    scrollTimer = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true, block: { [weak self] _ in
       guard let this = self else { return }
       switch to {
       case .left:
@@ -216,6 +230,8 @@ public class DragMenuView: UIView {
   public var direction = DragMenuDirection.horizontal
   /// Margins from edges of screen. Left and right margins for horizontal, top and bottom margins for vertical drag menu. Defaults 0
   @IBInspectable public var margins = CGFloat(0)
+  /// Apply custom view or layer styles for `DragMenuView` and its every `DragMenuItemView` with this function.
+  public var applyMenuStyle: DragMenuApplyStyleAction?
 
   /// Read-only property to get info about drag menu is shown or not.
   public dynamic var isOpen: Bool { return dragMenu != nil }
@@ -253,12 +269,15 @@ public class DragMenuView: UIView {
   ///   - items: Items of selection in drag menu.
   ///   - initialSelectionIndex: Initially selected item index.
   ///   - didSelectItem: Action on item selection.
-  public init(frame: CGRect, title: String, items: [String], initialSelectionIndex: Int = 0, didSelectItem: @escaping DragMenuSelectItemAction) {
+  ///   - applyMenuStyle: Apply custom style to `DragMenuView` and its every `DragMenuItemView` with this optional function.
+  public init(frame: CGRect, title: String, items: [String], initialSelectionIndex: Int = 0, didSelectItem: @escaping DragMenuSelectItemAction, applyMenuStyle: DragMenuApplyStyleAction? = nil) {
     super.init(frame: frame)
     self.title = title
     self.items = items
     self.selectedItemIndex = initialSelectionIndex
     self.didSelectItem = didSelectItem
+    self.applyMenuStyle = applyMenuStyle
+    addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
     commonInit()
   }
 
@@ -304,14 +323,15 @@ public class DragMenuView: UIView {
       items: items,
       initalSelection: selectedItemIndex,
       estimatedItemSize: estimatedItemSize,
-      controlBounds: bounds,
+      controlBounds: convert(bounds, to: nil),
       direction: direction,
       margins: margins,
       backgroundColor: dragMenuBackgroundColor,
       highlightedColor: dragMenuHightlightedItemColor,
       textColor: itemTextColor,
       highlightedTextColor: highlightedTextColor,
-      font: itemFont)
+      font: itemFont,
+      applyStyle: applyMenuStyle)
   }
 
   // MARK: Handle touches
