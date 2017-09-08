@@ -361,13 +361,17 @@ public class DragMenuView: UIView {
   }
 
   public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if let selectedItem = dragMenu?.items.filter({ $0.isHighlighted }).first {
+    guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuViewWillDismissMenu?(dragMenu)
+
+    if let selectedItem = dragMenu.items.filter({ $0.isHighlighted }).first {
       self.selectedItemIndex = selectedItem.tag
       self.didSelectItem(items[selectedItemIndex], selectedItemIndex)
     }
 
-    dragMenu?.removeFromSuperview()
-    dragMenu = nil
+    dragMenu.removeFromSuperview()
+    menuDelegate?.dragMenuViewDidDismissMenu?(dragMenu)
+    self.dragMenu = nil
   }
 
   // MARK: DragMenuViewDelegate
@@ -375,5 +379,20 @@ public class DragMenuView: UIView {
   public func dragMenuViewWillDisplayMenu(_ dragMenuView: DragMenuView) {
     guard let dragMenu = self.dragMenu else { return }
     menuDelegate?.dragMenuViewWillDisplayMenu?(dragMenu)
+  }
+
+  public func dragMenuViewDidDisplayMenu(_ dragMenuView: DragMenuView) {
+    guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuViewDidDisplayMenu?(dragMenu)
+  }
+
+  public func dragMenuViewWillDismissMenu(_ dragMenuView: DragMenuView) {
+    guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuViewWillDismissMenu?(dragMenu)
+  }
+
+  public func dragMenuViewDidDismissMenu(_ dragMenuView: DragMenuView) {
+    guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuViewDidDismissMenu?(dragMenu)
   }
 }

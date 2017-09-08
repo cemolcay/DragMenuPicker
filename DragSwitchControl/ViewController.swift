@@ -17,13 +17,15 @@ class ViewController: UIViewController, DragMenuViewDelegate {
     scrollView?.contentSize.height = 2000
     dragControl?.title = "Select an option"
     dragControl?.items = ["First", "Second", "Third", "Fourth", "Other", "Another", "Item 2", "Item 3"]
-//    dragControl?.direction = .vertical
+    dragControl?.direction = .horizontal
     dragControl?.margins = 20
     dragControl?.menuDelegate = self
     dragControl?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }
   }
+
+  // MARK: DragMenuViewDelegate
 
   func dragMenuViewWillDisplayMenu(_ dragMenuView: DragMenuView) {
     scrollView?.panGestureRecognizer.isEnabled = false
