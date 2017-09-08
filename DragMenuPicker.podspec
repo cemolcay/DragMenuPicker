@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "DragSwitchControl"
+  s.name         = "DragMenuPicker"
   s.version      = "0.0.1"
 s.summary      = "A custom button with ability to select an option from its items menu with drag gesture."
 
@@ -27,7 +27,7 @@ s.summary      = "A custom button with ability to select an option from its item
   s.description  = <<-DESC
                    DESC
 
-  s.homepage     = "https://github.com/cemolcay/DragSwitchControl"
+  s.homepage     = "https://github.com/cemolcay/DragMenuPicker"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -79,7 +79,7 @@ s.summary      = "A custom button with ability to select an option from its item
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/cemolcay/DragSwitchControl.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/cemolcay/DragMenuPicker.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
