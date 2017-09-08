@@ -64,7 +64,7 @@ public class DragMenuView: UIView {
   /// A reference the direction of drag menu.
   private var direction: DragMenuDirection
   /// Returns true if menu is scrolling any direction.
-  public private(set) var isScrolling = false { didSet { print("Scrolling \(isScrolling)") } }
+  public private(set) var isScrolling = false
   /// A timer object to update scrolling animation of menu.
   private var scrollTimer: Timer?
   /// Actual menu view, masked into parent to create scrolling effect.
