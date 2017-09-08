@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B25674EF1F601A2B0080D8ED"
-               BuildableName = "DragSwitchControl.app"
-               BlueprintName = "DragSwitchControl"
-               ReferencedContainer = "container:DragSwitchControl.xcodeproj">
+               BuildableName = "DragMenuPicker.app"
+               BlueprintName = "DragMenuPicker"
+               ReferencedContainer = "container:DragMenuPicker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B25674EF1F601A2B0080D8ED"
-            BuildableName = "DragSwitchControl.app"
-            BlueprintName = "DragSwitchControl"
-            ReferencedContainer = "container:DragSwitchControl.xcodeproj">
+            BuildableName = "DragMenuPicker.app"
+            BlueprintName = "DragMenuPicker"
+            ReferencedContainer = "container:DragMenuPicker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B25674EF1F601A2B0080D8ED"
-            BuildableName = "DragSwitchControl.app"
-            BlueprintName = "DragSwitchControl"
-            ReferencedContainer = "container:DragSwitchControl.xcodeproj">
+            BuildableName = "DragMenuPicker.app"
+            BlueprintName = "DragMenuPicker"
+            ReferencedContainer = "container:DragMenuPicker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B25674EF1F601A2B0080D8ED"
-            BuildableName = "DragSwitchControl.app"
-            BlueprintName = "DragSwitchControl"
-            ReferencedContainer = "container:DragSwitchControl.xcodeproj">
+            BuildableName = "DragMenuPicker.app"
+            BlueprintName = "DragMenuPicker"
+            ReferencedContainer = "container:DragMenuPicker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

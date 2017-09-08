@@ -1,11 +1,11 @@
 //
-//  DragSwitchControl.swift
-//  DragSwitchControl
+//  DragMenuPicker.swift
+//  DragMenuPicker
 //
 //  Created by Cem Olcay on 06/09/2017.
 //  Copyright © 2017 cemolcay. All rights reserved.
 //
-//  https://github.com/cemolcay/DragSwitchControl
+//  https://github.com/cemolcay/DragMenuPicker
 //
 
 import UIKit
@@ -221,7 +221,7 @@ public class DragMenuView: UIView {
 }
 
 /// A custom button with ability to select an option from its items menu with drag gesture.
-@IBDesignable public class DragSwitchControl: UIView, DragMenuViewDelegate {
+@IBDesignable public class DragMenuPicker: UIView, DragMenuViewDelegate {
   /// The title of the button.
   @IBInspectable public var title = "" { didSet { setNeedsLayout() }}
   /// Items of drag menu.

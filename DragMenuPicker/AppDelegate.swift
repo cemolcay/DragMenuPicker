@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  DragSwitchControl
+//  DragMenuPicker
 //
 //  Created by Cem Olcay on 06/09/2017.
 //  Copyright © 2017 cemolcay. All rights reserved.

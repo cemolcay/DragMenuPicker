@@ -7,23 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B25674F41F601A2B0080D8ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25674F31F601A2B0080D8ED /* AppDelegate.swift */; };
-		B25674F61F601A2B0080D8ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25674F51F601A2B0080D8ED /* ViewController.swift */; };
-		B25674F91F601A2B0080D8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B25674F71F601A2B0080D8ED /* Main.storyboard */; };
-		B25674FB1F601A2B0080D8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B25674FA1F601A2B0080D8ED /* Assets.xcassets */; };
-		B25674FE1F601A2B0080D8ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B25674FC1F601A2B0080D8ED /* LaunchScreen.storyboard */; };
-		B25675061F601A450080D8ED /* DragSwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25675051F601A450080D8ED /* DragSwitchControl.swift */; };
+		B25675111F62FB7F0080D8ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25675081F62FB7F0080D8ED /* AppDelegate.swift */; };
+		B25675121F62FB7F0080D8ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B25675091F62FB7F0080D8ED /* Assets.xcassets */; };
+		B25675131F62FB7F0080D8ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B256750A1F62FB7F0080D8ED /* LaunchScreen.storyboard */; };
+		B25675141F62FB7F0080D8ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B256750C1F62FB7F0080D8ED /* Main.storyboard */; };
+		B25675151F62FB7F0080D8ED /* DragMenuPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256750E1F62FB7F0080D8ED /* DragMenuPicker.swift */; };
+		B25675161F62FB7F0080D8ED /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B256750F1F62FB7F0080D8ED /* Info.plist */; };
+		B25675171F62FB7F0080D8ED /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25675101F62FB7F0080D8ED /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B25674F01F601A2B0080D8ED /* DragSwitchControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DragSwitchControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B25674F31F601A2B0080D8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B25674F51F601A2B0080D8ED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B25674F81F601A2B0080D8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B25674FA1F601A2B0080D8ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B25674FD1F601A2B0080D8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B25674FF1F601A2B0080D8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B25675051F601A450080D8ED /* DragSwitchControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragSwitchControl.swift; sourceTree = "<group>"; };
+		B25674F01F601A2B0080D8ED /* DragMenuPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DragMenuPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B25675081F62FB7F0080D8ED /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B25675091F62FB7F0080D8ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B256750B1F62FB7F0080D8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B256750D1F62FB7F0080D8ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B256750E1F62FB7F0080D8ED /* DragMenuPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragMenuPicker.swift; sourceTree = "<group>"; };
+		B256750F1F62FB7F0080D8ED /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B25675101F62FB7F0080D8ED /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +41,7 @@
 		B25674E71F601A2B0080D8ED = {
 			isa = PBXGroup;
 			children = (
-				B25674F21F601A2B0080D8ED /* DragSwitchControl */,
+				B25675071F62FB7F0080D8ED /* DragMenuPicker */,
 				B25674F11F601A2B0080D8ED /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,31 +49,31 @@
 		B25674F11F601A2B0080D8ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B25674F01F601A2B0080D8ED /* DragSwitchControl.app */,
+				B25674F01F601A2B0080D8ED /* DragMenuPicker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B25674F21F601A2B0080D8ED /* DragSwitchControl */ = {
+		B25675071F62FB7F0080D8ED /* DragMenuPicker */ = {
 			isa = PBXGroup;
 			children = (
-				B25674F31F601A2B0080D8ED /* AppDelegate.swift */,
-				B25674F51F601A2B0080D8ED /* ViewController.swift */,
-				B25675051F601A450080D8ED /* DragSwitchControl.swift */,
-				B25674F71F601A2B0080D8ED /* Main.storyboard */,
-				B25674FA1F601A2B0080D8ED /* Assets.xcassets */,
-				B25674FC1F601A2B0080D8ED /* LaunchScreen.storyboard */,
-				B25674FF1F601A2B0080D8ED /* Info.plist */,
+				B25675081F62FB7F0080D8ED /* AppDelegate.swift */,
+				B25675101F62FB7F0080D8ED /* ViewController.swift */,
+				B256750E1F62FB7F0080D8ED /* DragMenuPicker.swift */,
+				B25675091F62FB7F0080D8ED /* Assets.xcassets */,
+				B256750A1F62FB7F0080D8ED /* LaunchScreen.storyboard */,
+				B256750C1F62FB7F0080D8ED /* Main.storyboard */,
+				B256750F1F62FB7F0080D8ED /* Info.plist */,
 			);
-			path = DragSwitchControl;
+			path = DragMenuPicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B25674EF1F601A2B0080D8ED /* DragSwitchControl */ = {
+		B25674EF1F601A2B0080D8ED /* DragMenuPicker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B25675021F601A2B0080D8ED /* Build configuration list for PBXNativeTarget "DragSwitchControl" */;
+			buildConfigurationList = B25675021F601A2B0080D8ED /* Build configuration list for PBXNativeTarget "DragMenuPicker" */;
 			buildPhases = (
 				B25674EC1F601A2B0080D8ED /* Sources */,
 				B25674ED1F601A2B0080D8ED /* Frameworks */,
@@ -82,9 +83,9 @@
 			);
 			dependencies = (
 			);
-			name = DragSwitchControl;
+			name = DragMenuPicker;
 			productName = DragSwitchControl;
-			productReference = B25674F01F601A2B0080D8ED /* DragSwitchControl.app */;
+			productReference = B25674F01F601A2B0080D8ED /* DragMenuPicker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +105,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B25674EB1F601A2B0080D8ED /* Build configuration list for PBXProject "DragSwitchControl" */;
+			buildConfigurationList = B25674EB1F601A2B0080D8ED /* Build configuration list for PBXProject "DragMenuPicker" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -117,7 +118,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B25674EF1F601A2B0080D8ED /* DragSwitchControl */,
+				B25674EF1F601A2B0080D8ED /* DragMenuPicker */,
 			);
 		};
 /* End PBXProject section */
@@ -127,9 +128,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B25674FE1F601A2B0080D8ED /* LaunchScreen.storyboard in Resources */,
-				B25674FB1F601A2B0080D8ED /* Assets.xcassets in Resources */,
-				B25674F91F601A2B0080D8ED /* Main.storyboard in Resources */,
+				B25675161F62FB7F0080D8ED /* Info.plist in Resources */,
+				B25675141F62FB7F0080D8ED /* Main.storyboard in Resources */,
+				B25675121F62FB7F0080D8ED /* Assets.xcassets in Resources */,
+				B25675131F62FB7F0080D8ED /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,29 +142,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B25674F61F601A2B0080D8ED /* ViewController.swift in Sources */,
-				B25675061F601A450080D8ED /* DragSwitchControl.swift in Sources */,
-				B25674F41F601A2B0080D8ED /* AppDelegate.swift in Sources */,
+				B25675171F62FB7F0080D8ED /* ViewController.swift in Sources */,
+				B25675111F62FB7F0080D8ED /* AppDelegate.swift in Sources */,
+				B25675151F62FB7F0080D8ED /* DragMenuPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B25674F71F601A2B0080D8ED /* Main.storyboard */ = {
+		B256750A1F62FB7F0080D8ED /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B25674F81F601A2B0080D8ED /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		B25674FC1F601A2B0080D8ED /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B25674FD1F601A2B0080D8ED /* Base */,
+				B256750B1F62FB7F0080D8ED /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B256750C1F62FB7F0080D8ED /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B256750D1F62FB7F0080D8ED /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -268,9 +270,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 77Y3N48SNF;
-				INFOPLIST_FILE = DragSwitchControl/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/DragMenuPicker/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.cemolcay.DragSwitchControl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cemolcay.DragMenuPicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -281,9 +283,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 77Y3N48SNF;
-				INFOPLIST_FILE = DragSwitchControl/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/DragMenuPicker/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.cemolcay.DragSwitchControl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cemolcay.DragMenuPicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -292,7 +294,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B25674EB1F601A2B0080D8ED /* Build configuration list for PBXProject "DragSwitchControl" */ = {
+		B25674EB1F601A2B0080D8ED /* Build configuration list for PBXProject "DragMenuPicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B25675001F601A2B0080D8ED /* Debug */,
@@ -301,7 +303,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B25675021F601A2B0080D8ED /* Build configuration list for PBXNativeTarget "DragSwitchControl" */ = {
+		B25675021F601A2B0080D8ED /* Build configuration list for PBXNativeTarget "DragMenuPicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B25675031F601A2B0080D8ED /* Debug */,

@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  DragSwitchControl
+//  DragMenuPicker
 //
 //  Created by Cem Olcay on 06/09/2017.
 //  Copyright © 2017 cemolcay. All rights reserved.
@@ -10,8 +10,8 @@ import UIKit
 
 class ViewController: UIViewController, DragMenuViewDelegate {
   @IBOutlet weak var scrollView: UIScrollView?
-  @IBOutlet weak var horizontalDragPicker: DragSwitchControl?
-  @IBOutlet weak var verticalDragPicker: DragSwitchControl?
+  @IBOutlet weak var horizontalDragPicker: DragMenuPicker?
+  @IBOutlet weak var verticalDragPicker: DragMenuPicker?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -22,6 +22,7 @@ class ViewController: UIViewController, DragMenuViewDelegate {
     // Horizontal DragSwitchPicker
     horizontalDragPicker?.title = "Horizontal Picker"
     horizontalDragPicker?.items = items
+    horizontalDragPicker?.direction = .horizontal
     horizontalDragPicker?.margins = 20
     horizontalDragPicker?.menuDelegate = self
     horizontalDragPicker?.didSelectItem = { item, index in
@@ -31,6 +32,7 @@ class ViewController: UIViewController, DragMenuViewDelegate {
     // VerticalDragPicker
     verticalDragPicker?.title = "Vertical Picker"
     verticalDragPicker?.items = items
+    verticalDragPicker?.direction = .vertical
     verticalDragPicker?.margins = 40
     verticalDragPicker?.menuDelegate = self
     verticalDragPicker?.didSelectItem = { item, index in

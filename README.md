@@ -1,4 +1,4 @@
-DragSwitchControl
+DragMenuPicker
 ===
 
 A custom button with ability to select an option from its items menu with drag gesture.
