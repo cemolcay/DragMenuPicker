@@ -44,6 +44,13 @@ public class DragMenuItemView: UILabel {
   }
 }
 
+@objc public protocol DragMenuViewDelegate {
+  @objc optional func dragMenuViewWillDisplayMenu(_ dragMenuView: DragMenuView)
+  @objc optional func dragMenuViewDidDisplayMenu(_ dragMenuView: DragMenuView)
+  @objc optional func dragMenuViewWillDismissMenu(_ dragMenuView: DragMenuView)
+  @objc optional func dragMenuViewDidDismissMenu(_ dragMenuView: DragMenuView)
+}
+
 /// Drag menu view with items and display options.
 public class DragMenuView: UIView {
   /// Selection items in drag menu.
@@ -62,6 +69,8 @@ public class DragMenuView: UIView {
   private var scrollTimer: Timer?
   /// Actual menu view, masked into parent to create scrolling effect.
   public private(set) var menuView = UIView()
+  /// Delegate that informs display status.
+  public weak var delegate: DragMenuViewDelegate?
 
   /// Helper enum to scroll menu in a direction.
   private enum ScrollDirection {
@@ -93,8 +102,6 @@ public class DragMenuView: UIView {
 
     clipsToBounds = true
     addSubview(menuView)
-    isExclusiveTouch = true
-    addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTap(gesture:))))
 
     debugLayer()
     menuView.debugLayer(color: .blue)
@@ -127,11 +134,10 @@ public class DragMenuView: UIView {
     }
   }
 
-  public func didTap(gesture: UITapGestureRecognizer) {
-    print("did tap")
+  public func didPan(gesture: UIPanGestureRecognizer) {
     return
   }
-  
+
   public required init?(coder aDecoder: NSCoder) {
     direction = .horizontal
     super.init(coder: aDecoder)
@@ -215,7 +221,7 @@ public class DragMenuView: UIView {
 }
 
 /// A custom button with ability to select an option from its items menu with drag gesture.
-@IBDesignable public class DragSwitchControl: UIView {
+@IBDesignable public class DragSwitchControl: UIView, DragMenuViewDelegate {
   /// The title of the button.
   @IBInspectable public var title = "" { didSet { setNeedsLayout() }}
   /// Items of drag menu.
@@ -232,6 +238,8 @@ public class DragMenuView: UIView {
   @IBInspectable public var margins = CGFloat(0)
   /// Apply custom view or layer styles for `DragMenuView` and its every `DragMenuItemView` with this function.
   public var applyMenuStyle: DragMenuApplyStyleAction?
+  /// Informs about drag menu status via `DragMenuViewDelegate`.
+  public weak var menuDelegate: DragMenuViewDelegate?
 
   /// Read-only property to get info about drag menu is shown or not.
   public dynamic var isOpen: Bool { return dragMenu != nil }
@@ -340,7 +348,9 @@ public class DragMenuView: UIView {
     guard dragMenu == nil else { return }
     dragMenu = createDragMenu()
     guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuViewWillDisplayMenu?(dragMenu)
     addSubview(dragMenu)
+    menuDelegate?.dragMenuViewDidDisplayMenu?(dragMenu)
   }
 
   public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -358,5 +368,12 @@ public class DragMenuView: UIView {
 
     dragMenu?.removeFromSuperview()
     dragMenu = nil
+  }
+
+  // MARK: DragMenuViewDelegate
+
+  public func dragMenuViewWillDisplayMenu(_ dragMenuView: DragMenuView) {
+    guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuViewWillDisplayMenu?(dragMenu)
   }
 }
