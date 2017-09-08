@@ -10,17 +10,30 @@ import UIKit
 
 class ViewController: UIViewController, DragMenuViewDelegate {
   @IBOutlet weak var scrollView: UIScrollView?
-  @IBOutlet weak var dragControl: DragSwitchControl?
+  @IBOutlet weak var horizontalDragPicker: DragSwitchControl?
+  @IBOutlet weak var verticalDragPicker: DragSwitchControl?
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
     scrollView?.contentSize.height = 2000
-    dragControl?.title = "Select an option"
-    dragControl?.items = ["First", "Second", "Third", "Fourth", "Other", "Another", "Item 2", "Item 3"]
-    dragControl?.direction = .horizontal
-    dragControl?.margins = 20
-    dragControl?.menuDelegate = self
-    dragControl?.didSelectItem = { item, index in
+    let items = ["First", "Second", "Third", "Fourth", "Other", "Another", "Item 2", "Item 3"]
+
+    // Horizontal DragSwitchPicker
+    horizontalDragPicker?.title = "Horizontal Picker"
+    horizontalDragPicker?.items = items
+    horizontalDragPicker?.margins = 20
+    horizontalDragPicker?.menuDelegate = self
+    horizontalDragPicker?.didSelectItem = { item, index in
+      print("\(item) selected at index \(index)")
+    }
+
+    // VerticalDragPicker
+    verticalDragPicker?.title = "Vertical Picker"
+    verticalDragPicker?.items = items
+    verticalDragPicker?.margins = 40
+    verticalDragPicker?.menuDelegate = self
+    verticalDragPicker?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }
   }

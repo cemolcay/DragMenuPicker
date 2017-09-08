@@ -29,6 +29,11 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jvk-lC-uRI" customClass="DragSwitchControl" customModule="DragSwitchControl" customModuleProvider="target">
+                                        <rect key="frame" x="24" y="301" width="134" height="45"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -41,8 +46,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="dragControl" destination="tIf-g9-hPg" id="zDP-25-zes"/>
+                        <outlet property="horizontalDragPicker" destination="tIf-g9-hPg" id="s8s-8v-84x"/>
                         <outlet property="scrollView" destination="AYI-DX-rrd" id="Ofc-Ir-y3z"/>
+                        <outlet property="verticalDragPicker" destination="Jvk-lC-uRI" id="H4J-DL-Okp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
