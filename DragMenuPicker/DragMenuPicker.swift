@@ -44,11 +44,35 @@ public class DragMenuItemView: UILabel {
   }
 }
 
+/// `DragMenuView` delegate that informs about menu state.
 @objc public protocol DragMenuViewDelegate {
+  /// Informs about menu is going to be displayed.
+  ///
+  /// - Parameter dragMenuView: Displaying menu.
   @objc optional func dragMenuViewWillDisplayMenu(_ dragMenuView: DragMenuView)
+
+  /// Informs about menu is displayed.
+  ///
+  /// - Parameter dragMenuView: Displayed menu.
   @objc optional func dragMenuViewDidDisplayMenu(_ dragMenuView: DragMenuView)
+
+  /// Informs about menu going to be dismissed.
+  ///
+  /// - Parameter dragMenuView: Dismissing menu.
   @objc optional func dragMenuViewWillDismissMenu(_ dragMenuView: DragMenuView)
+
+  /// Informs about menu did dismissed, with or without a selection
+  ///
+  /// - Parameter dragMenuView: Dismissed menu.
   @objc optional func dragMenuViewDidDismissMenu(_ dragMenuView: DragMenuView)
+
+  /// Informs about menu item selection.
+  ///
+  /// - Parameters:
+  ///   - dragMenuView: Menu that select an item.
+  ///   - item: Selected item.
+  ///   - index: Selected item index.
+  @objc optional func dragMenuView(_ dragMenuView: DragMenuView, didSelect item: String, at index: Int)
 }
 
 /// Drag menu view with items and display options.
@@ -367,6 +391,7 @@ public class DragMenuView: UIView {
     if let selectedItem = dragMenu.items.filter({ $0.isHighlighted }).first {
       self.selectedItemIndex = selectedItem.tag
       self.didSelectItem(items[selectedItemIndex], selectedItemIndex)
+      menuDelegate?.dragMenuView?(dragMenu, didSelect: items[selectedItemIndex], at: selectedItemIndex)
     }
 
     dragMenu.removeFromSuperview()
@@ -394,5 +419,10 @@ public class DragMenuView: UIView {
   public func dragMenuViewDidDismissMenu(_ dragMenuView: DragMenuView) {
     guard let dragMenu = self.dragMenu else { return }
     menuDelegate?.dragMenuViewDidDismissMenu?(dragMenu)
+  }
+
+  public func dragMenuView(_ dragMenuView: DragMenuView, didSelect item: String, at index: Int) {
+    guard let dragMenu = self.dragMenu else { return }
+    menuDelegate?.dragMenuView?(dragMenu, didSelect: items[selectedItemIndex], at: selectedItemIndex)
   }
 }

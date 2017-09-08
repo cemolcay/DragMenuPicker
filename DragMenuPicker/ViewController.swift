@@ -49,4 +49,8 @@ class ViewController: UIViewController, DragMenuViewDelegate {
   func dragMenuViewDidDisplayMenu(_ dragMenuView: DragMenuView) {
     scrollView?.panGestureRecognizer.isEnabled = true
   }
+
+  func dragMenuView(_ dragMenuView: DragMenuView, didSelect item: String, at index: Int) {
+    print("(from delegate) \(item) selected at index \(index)")
+  }
 }
