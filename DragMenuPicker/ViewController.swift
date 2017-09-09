@@ -28,7 +28,6 @@ class ViewController: UIViewController, DragMenuViewDelegate {
     horizontalDragPicker?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }
-    horizontalDragPicker?.debugLayer()
 
     // VerticalDragPicker
     verticalDragPicker?.title = "Vertical Picker"
@@ -39,7 +38,6 @@ class ViewController: UIViewController, DragMenuViewDelegate {
     verticalDragPicker?.didSelectItem = { item, index in
       print("\(item) selected at index \(index)")
     }
-    verticalDragPicker?.debugLayer()
   }
 
   // MARK: DragMenuViewDelegate

@@ -10,13 +10,6 @@
 
 import UIKit
 
-extension UIView {
-  func debugLayer(color: UIColor = .red) {
-    layer.borderColor = color.cgColor
-    layer.borderWidth = 1
-  }
-}
-
 /// Action handler on drag menu item selection.
 public typealias DragMenuSelectItemAction = (_ item: String, _ index: Int) -> Void
 
@@ -97,8 +90,8 @@ public class DragMenuView: UIView {
   public weak var delegate: DragMenuViewDelegate?
 
   /// Helper enum to scroll menu in a direction.
-  private enum ScrollDirection {
-    case left, right, up, down
+  private enum ScrollDirection: Int {
+    case left = 0, right, up, down
   }
 
   /// Initilizes the drag menu with items, direction and item options.
@@ -118,7 +111,6 @@ public class DragMenuView: UIView {
   ///   - applyStyle: Style drag menu and its every item with this optional function.
   public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlBounds: CGRect, direction: DragMenuDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, highlightedTextColor: UIColor, font: UIFont, applyStyle: DragMenuApplyStyleAction? = nil) {
     self.direction = direction
-    print(controlBounds)
     super.init(frame: CGRect(
       x: direction == .horizontal ? -controlBounds.minX + margins : 0,
       y: direction == .horizontal ? 0 : -controlBounds.minY + margins,
@@ -127,9 +119,6 @@ public class DragMenuView: UIView {
 
     clipsToBounds = true
     addSubview(menuView)
-
-    debugLayer()
-    menuView.debugLayer(color: .blue)
 
     addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil)) // add dummy gesture recognizer
     menuView.backgroundColor = backgroundColor
@@ -154,7 +143,6 @@ public class DragMenuView: UIView {
       itemView.font = font
       self.items.append(itemView)
       menuView.addSubview(itemView)
-      itemView.debugLayer(color: .green)
       applyStyle?(self, itemView)
     }
   }
@@ -209,35 +197,44 @@ public class DragMenuView: UIView {
     }
 
     isScrolling = true
-    scrollTimer = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true, block: { [weak self] _ in
-      guard let this = self else { return }
-      switch to {
-      case .left:
-        var newPosition = this.menuView.frame.origin.x + this.maximumScrollingSpeed
-        if newPosition > 0 {
-          newPosition = 0
-        }
-        this.menuView.layer.frame.origin.x = newPosition
-      case .right:
-        var newPosition = this.menuView.frame.origin.x - this.maximumScrollingSpeed
-        if newPosition <= this.frame.size.width - this.menuView.frame.size.width {
-          newPosition = this.frame.size.width - this.menuView.frame.size.width
-        }
-        this.menuView.layer.frame.origin.x = newPosition
-      case .up:
-        var newPosition = this.menuView.frame.origin.y + this.maximumScrollingSpeed
-        if newPosition > 0 {
-          newPosition = 0
-        }
-        this.menuView.frame.origin.y = newPosition
-      case .down:
-        var newPosition = this.menuView.frame.origin.y - this.maximumScrollingSpeed
-        if newPosition <= this.frame.size.height - this.menuView.frame.size.height {
-          newPosition = this.frame.size.height - this.menuView.frame.size.height
-        }
-        this.menuView.frame.origin.y = newPosition
+    scrollTimer = Timer.scheduledTimer(
+      timeInterval: 0.016,
+      target: self,
+      selector: #selector(timerTick(timer:)),
+      userInfo: to.rawValue,
+      repeats: true)
+  }
+
+  @objc private func timerTick(timer: Timer) {
+    guard let directionValue = (timer.userInfo as? Int),
+      let scrollDirection = ScrollDirection(rawValue: directionValue)
+      else { return }
+    switch scrollDirection {
+    case .left:
+      var newPosition = menuView.frame.origin.x + maximumScrollingSpeed
+      if newPosition > 0 {
+        newPosition = 0
       }
-    })
+      menuView.layer.frame.origin.x = newPosition
+    case .right:
+      var newPosition = menuView.frame.origin.x - maximumScrollingSpeed
+      if newPosition <= frame.size.width - menuView.frame.size.width {
+        newPosition = frame.size.width - menuView.frame.size.width
+      }
+      menuView.layer.frame.origin.x = newPosition
+    case .up:
+      var newPosition = menuView.frame.origin.y + maximumScrollingSpeed
+      if newPosition > 0 {
+        newPosition = 0
+      }
+      menuView.frame.origin.y = newPosition
+    case .down:
+      var newPosition = menuView.frame.origin.y - maximumScrollingSpeed
+      if newPosition <= frame.size.height - menuView.frame.size.height {
+        newPosition = frame.size.height - menuView.frame.size.height
+      }
+      menuView.frame.origin.y = newPosition
+    }
   }
 
   private func stopScrolling() {
