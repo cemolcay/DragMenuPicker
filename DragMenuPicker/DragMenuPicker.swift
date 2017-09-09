@@ -118,6 +118,7 @@ public class DragMenuView: UIView {
   ///   - applyStyle: Style drag menu and its every item with this optional function.
   public init(items: [String], initalSelection: Int, estimatedItemSize: CGFloat, controlBounds: CGRect, direction: DragMenuDirection, margins: CGFloat, backgroundColor: UIColor, highlightedColor: UIColor, textColor: UIColor, highlightedTextColor: UIColor, font: UIFont, applyStyle: DragMenuApplyStyleAction? = nil) {
     self.direction = direction
+    print(controlBounds)
     super.init(frame: CGRect(
       x: direction == .horizontal ? -controlBounds.minX + margins : 0,
       y: direction == .horizontal ? 0 : -controlBounds.minY + margins,
@@ -134,7 +135,7 @@ public class DragMenuView: UIView {
     menuView.backgroundColor = backgroundColor
     menuView.frame = CGRect(
       x: direction == .horizontal ? -(CGFloat(initalSelection) * estimatedItemSize) + controlBounds.minX : 0,
-      y: direction == .horizontal ? 0 : -(CGFloat(initalSelection) * estimatedItemSize) + controlBounds.minY - (controlBounds.size.height / 2),
+      y: direction == .horizontal ? 0 : -(CGFloat(initalSelection) * estimatedItemSize) + controlBounds.minY - margins,
       width: direction == .horizontal ? CGFloat(items.count) * estimatedItemSize : controlBounds.width,
       height: direction == .horizontal ? controlBounds.height : CGFloat(items.count) * estimatedItemSize)
 
@@ -153,7 +154,7 @@ public class DragMenuView: UIView {
       itemView.font = font
       self.items.append(itemView)
       menuView.addSubview(itemView)
-
+      itemView.debugLayer(color: .green)
       applyStyle?(self, itemView)
     }
   }
@@ -174,7 +175,9 @@ public class DragMenuView: UIView {
   /// - Parameter location: Current position of touch on drag menu.
   public func updateMenu(for position: CGPoint) {
     // Check if menu is scrollable
-    if menuView.frame.width > frame.width || menuView.frame.height > frame.height {
+    let scrollable = (menuView.frame.minX < 0 || menuView.frame.maxX > frame.size.width) || // check horizontal scrollable bounds
+      (menuView.frame.minY < 0 || menuView.frame.maxY > frame.size.height) // check vertical scrollable bounds
+    if scrollable {
       // Update menu position
       switch direction {
       case .horizontal:
@@ -380,7 +383,8 @@ public class DragMenuView: UIView {
   public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard isOpen,
       let dragMenu = dragMenu,
-      let touchLocation = touches.first?.location(in: dragMenu) else { return }
+      let touchLocation = touches.first?.location(in: dragMenu)
+    else { return }
     dragMenu.updateMenu(for: touchLocation)
   }
 
